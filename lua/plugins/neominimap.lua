@@ -36,15 +36,51 @@ return {
       { "<leader>ns", "<cmd>Neominimap ToggleFocus<cr>", desc = "Switch focus on minimap" },
     },
     init = function()
-      -- The following options are recommended when layout == "float"
-      vim.opt.wrap = false
-      vim.opt.sidescrolloff = 36 -- Set a large value
+      -- Force Neovim to prefer splitting to the right globally
+      vim.opt.splitright = true
+      vim.opt.wrap = true
+      vim.opt.sidescrolloff = 5
+      -- Removing textwidth here as discussed to prevent hard-breaks
+      -- vim.opt.textwidth = 100 
 
-      --- Put your configuration here
-      ---@type Neominimap.UserConfig
       vim.g.neominimap = {
         auto_enable = true,
+        layout = "split",
+        split = {
+          side = "right", -- This should now be respected
+          width = 20,     -- Slightly wider to handle the 'split' gutter
+          fix_width = true,
+        },
       }
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "VimResized" }, {
+        callback = function()
+          if vim.bo.filetype ~= "neominimap" then
+            -- Since it's a split, the window itself ends where the minimap starts.
+            -- We don't need wrapmargin anymore, just standard wrapping!
+            vim.opt_local.wrap = true
+            vim.opt_local.linebreak = true
+            vim.opt_local.colorcolumn = "100"
+          end
+        end,
+      })
+      vim.api.nvim_create_autocmd("QuitPre", {
+        callback = function()
+          local invalid_win = {}
+          local wins = vim.api.nvim_list_wins()
+          for _, win in ipairs(wins) do
+            local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win))
+            if bufname:match("neominimap") then
+              table.insert(invalid_win, win)
+            end
+          end
+          if #wins - #invalid_win <= 1 then
+            for _, win in ipairs(invalid_win) do
+              vim.api.nvim_win_close(win, true)
+            end
+          end
+        end,
+      })
     end,
   }
 }

@@ -11,7 +11,7 @@ return {
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
   require("mason-lspconfig").setup({
-    ensure_installed = { "lua_ls", "pyright", "tsserver", "zls", "vue_ls" },
+    ensure_installed = { "lua_ls", "pyright", "ts_ls", "zls", "vue_ls" },
     -- Configuration handlers are now placed directly inside setup()
     handlers = {
       -- Default handler
