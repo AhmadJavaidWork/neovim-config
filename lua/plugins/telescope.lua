@@ -22,10 +22,32 @@ return {
 		})
 
 		vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = "Telescope find files" })
-		vim.keymap.set("n", "<leader>fa", builtin.live_grep, { desc = "Telescope live grep" })
-		vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "Git status" })
+		vim.keymap.set("n", "<leader>pgi", builtin.live_grep, { desc = "Telescope live grep" })
+		vim.keymap.set("n", "<leader>pgu", function()
+			builtin.live_grep({
+				additional_args = function(opts)
+					return { "--unrestricted" }
+				end,
+				file_ignore_patterns = {
+					"^node_modules/",
+					"^.git/",
+					"target/",
+					"dist/",
+				},
+			})
+		end, { desc = "Live grep all files (including ignored)" })
+		vim.keymap.set("n", "<leader>ps", builtin.git_status, { desc = "Git status" })
 		vim.keymap.set("n", "<leader>pa", function()
-			builtin.find_files({ no_ignore = true, hidden = true })
+			builtin.find_files({
+				no_ignore = true,
+				hidden = true,
+				file_ignore_patterns = {
+					"^node_modules/",
+					"^.git/",
+					"target/",
+					"dist/",
+				},
+			})
 		end, { desc = "All files" })
 	end,
 }
