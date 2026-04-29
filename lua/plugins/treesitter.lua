@@ -1,14 +1,29 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	branch = "master",
+	branch = "main",
+	event = { "BufReadPre", "BufNewFile" },
 	build = ":TSUpdate",
 	config = function()
-		require("nvim-treesitter.configs").setup({
-			ensure_installed = { "typescript", "tsx", "go", "lua" },
-			highlight = {
-				enable = true,
-				additional_vim_regex_highlighting = false,
-			},
+		-- import nvim-treesitter plugin
+		local treesitter = require("nvim-treesitter")
+		treesitter.install({
+			"go",
+			"typescript",
+			"json",
+			"javascript",
+			"tsx",
+			"yaml",
+			"html",
+			"css",
+			"markdown",
+			"bash",
+			"lua",
+			"vim",
+			"dockerfile",
+			"gitignore",
+			"vimdoc",
+			"c",
+			"zig",
 		})
 	end,
 }
