@@ -7,6 +7,7 @@ return {
 				lua = { "stylua" },
 				typescript = { "prettierd", "prettier", stop_after_first = true },
 				javascript = { "prettierd", "prettier", stop_after_first = true },
+				vue = { "prettierd", "prettier", stop_after_first = true },
 				json = { "prettierd", "prettier", stop_after_first = true },
 				zig = { "zigfmt" },
 				go = { "gofmt" },

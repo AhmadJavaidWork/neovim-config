@@ -48,6 +48,19 @@ return {
 					end
 				end)
 
+				vim.keymap.set("n", "<leader>ghc", function()
+					gs.stage_hunk()
+					vim.ui.input({ prompt = "Commit Hunk Message: " }, function(input)
+						if input and input ~= "" then
+							local out = vim.fn.system('git commit -m "' .. input .. '"')
+							print(out)
+						else
+							print("Commit cancelled: No message provided")
+							gs.reset_hunk()
+						end
+					end)
+				end, { desc = "Stage hunk and commit" })
+
 				map("n", "<leader>hs", gs.stage_hunk)
 				map("n", "<leader>hS", gs.stage_buffer)
 				map("n", "<leader>hR", gs.reset_buffer)

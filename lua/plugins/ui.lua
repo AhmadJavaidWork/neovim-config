@@ -29,6 +29,8 @@ return {
 
 					PmenuSel = { bg = "#04395E", fg = "NONE" },
 					Pmenu = { bg = "#1e1e1e", fg = "#cccccc" },
+
+					["@lsp.type.component.vue"] = { fg = "#4ec9b0" },
 				},
 			})
 			vim.cmd.colorscheme("vscode")
