@@ -49,3 +49,24 @@ vim.keymap.set("n", "<leader>gc", function()
 		end
 	end)
 end, { desc = "Git Commit" })
+
+local function run_git_and_show(cmd)
+	local branch = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("\n", "")
+	local full_cmd = cmd .. " origin " .. branch
+
+	print("Executing: " .. full_cmd)
+
+	local output = vim.fn.system(full_cmd)
+
+	vim.schedule(function()
+		print(output)
+	end)
+end
+
+vim.keymap.set("n", "<leader>gp", function()
+	run_git_and_show("git push")
+end, { desc = "Git push current branch" })
+
+vim.keymap.set("n", "<leader>gl", function()
+	run_git_and_show("git pull")
+end, { desc = "Git pull current branch" })
