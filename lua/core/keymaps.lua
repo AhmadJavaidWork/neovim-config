@@ -1,48 +1,56 @@
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover Documentation" })
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP Go to Definition" })
-vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "LSP Show References" })
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP Rename Variable" })
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<cr>")
+local set_keymap = vim.keymap.set
 
-vim.keymap.set("n", "<C-h>", "<C-w>h")
-vim.keymap.set("n", "<C-j>", "<C-w>j")
-vim.keymap.set("n", "<C-k>", "<C-w>k")
-vim.keymap.set("n", "<C-l>", "<C-w>l")
+set_keymap("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover Documentation" })
+set_keymap("n", "gd", vim.lsp.buf.definition, { desc = "LSP Go to Definition" })
+set_keymap("n", "gr", vim.lsp.buf.references, { desc = "LSP Show References" })
+set_keymap("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP Rename Variable" })
+set_keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP Code Action" })
+set_keymap("n", "<Esc>", "<cmd>nohlsearch<cr>", { desc = "Stop highlighting current search" })
 
-vim.keymap.set("v", "<", "<gv")
-vim.keymap.set("v", ">", ">gv")
+set_keymap("v", "<", "<gv", { desc = "Indent to left" })
+set_keymap("v", ">", ">gv", { desc = "Indent to right" })
 
-vim.keymap.set("n", "j", "gj", { desc = "Up", noremap = true })
-vim.keymap.set("n", "k", "gk", { desc = "Down", noremap = true })
+set_keymap("n", "j", "gj", { desc = "Moves to the next visual line", noremap = true })
+set_keymap("n", "k", "gk", { desc = "Moves to the previous visual line", noremap = true })
 
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+set_keymap("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected text to one line down adjusting indents" })
+set_keymap("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected text to one line up adjusting indents" })
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+set_keymap("n", "J", "mzJ`z", { desc = "Move and append next line to current line" })
+set_keymap("n", "<C-d>", "<C-d>zz", { desc = "Move half page down" })
+set_keymap("n", "<C-u>", "<C-u>zz", { desc = "Move half page up" })
+set_keymap(
+	"n",
+	"n",
+	"nzzzv",
+	{ desc = "When jump between search matches, the cursor stays centered and folded code opens automatically" }
+)
+set_keymap(
+	"n",
+	"N",
+	"Nzzzv",
+	{ desc = "When jump between search matches, the cursor stays centered and folded code opens automatically" }
+)
+set_keymap("n", "=ap", "ma=ap'a", { desc = "Reindents the paragraph but keeps cursor exactly where it was" })
 
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
-vim.keymap.set("n", "=ap", "ma=ap'a")
-vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
+set_keymap({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
+set_keymap("n", "<leader>Y", '"+Y', { desc = "Yank line to system clipboard" })
 
-vim.keymap.set("n", "<leader>y", '"+y')
-vim.keymap.set("v", "<leader>y", '"+y')
-vim.keymap.set("n", "<leader>Y", '"+Y')
+set_keymap({ "n", "v" }, "<leader>d", '"_d', { desc = "Deletes text without overwriting last yank" })
 
-vim.keymap.set({ "n", "v" }, "<leader>d", '"_d')
+set_keymap(
+	"n",
+	"<leader>s",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "Replace word under cursor globally" }
+)
+set_keymap("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "Make current file executable" })
 
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
-
-vim.keymap.set("n", "<leader>ga", function()
+set_keymap("n", "<leader>ga", function()
 	vim.cmd("silent !git add " .. vim.fn.expand("%"))
 end, { desc = "Git add current file (silent)" })
 
-vim.keymap.set("n", "<leader>gc", function()
+set_keymap("n", "<leader>gc", function()
 	vim.ui.input({ prompt = "Commit Message: " }, function(input)
 		if input then
 			vim.cmd('!git commit -m "' .. input .. '"')
@@ -63,10 +71,10 @@ local function run_git_and_show(cmd)
 	end)
 end
 
-vim.keymap.set("n", "<leader>gp", function()
+set_keymap("n", "<leader>gp", function()
 	run_git_and_show("git push")
 end, { desc = "Git push current branch" })
 
-vim.keymap.set("n", "<leader>gl", function()
+set_keymap("n", "<leader>gl", function()
 	run_git_and_show("git pull")
 end, { desc = "Git pull current branch" })

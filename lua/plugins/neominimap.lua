@@ -1,5 +1,6 @@
 return {
 	{
+		enabled = false,
 		---@module "neominimap.config.meta"
 		"Isrothy/neominimap.nvim",
 		version = "v3.x.x",

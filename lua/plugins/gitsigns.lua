@@ -20,7 +20,7 @@ return {
 			},
 			current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
 			on_attach = function(bufnr)
-				local gs = package.loaded.gitsigns
+				local gs = require("gitsigns")
 
 				local function map(mode, l, r, opts)
 					opts = opts or {}
@@ -48,22 +48,21 @@ return {
 					end
 				end)
 
-				map("n", "<leader>hs", gs.stage_hunk)
-				map("n", "<leader>hS", gs.stage_buffer)
-				map("n", "<leader>hR", gs.reset_buffer)
-				map("n", "<leader>hu", gs.undo_stage_hunk)
-				map("n", "<leader>hr", gs.reset_hunk)
+				map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage/Unstage current hunk" })
+				map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage current buffer" })
+				map("n", "<leader>hR", gs.reset_buffer_index, { desc = "Unstage current buffer" })
+				map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset current hunk" })
 
-				map("n", "<leader>hi", gs.preview_hunk_inline)
+				map("n", "<leader>hi", gs.preview_hunk_inline, { desc = "Preview current hunk inline diff" })
 				map("n", "<leader>hp", gs.preview_hunk)
 
-				map("n", "<leader>hd", gs.diffthis)
-				map("n", "<leader>tw", gs.toggle_word_diff)
+				map("n", "<leader>hd", gs.diffthis, { desc = "Preview all diff of current buffer" })
+				map("n", "<leader>tw", gs.toggle_word_diff, { desc = "Toggle word diff" })
 
-				map("n", "<leader>tb", gs.toggle_current_line_blame)
+				map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "Toggle current line blame" })
 				map("n", "<leader>hb", function()
 					gs.blame_line({ full = false })
-				end)
+				end, { desc = "See current line blame in hover" })
 			end,
 		},
 	},

@@ -15,60 +15,52 @@ return {
 		})
 
 		vim.keymap.set("n", "<leader>hc", function()
-			local harpoon = require("harpoon")
 			harpoon:list():clear()
 			print("Harpoon cleared")
-		end, { desc = "Clear Harpoon list" })
+		end, { desc = "Clear Harpoon" })
 
 		vim.keymap.set("n", "<leader>a", function()
 			harpoon:list():add()
-		end)
+		end, { desc = "Add to harpoon" })
+
 		vim.keymap.set("n", "<C-e>", function()
 			harpoon.ui:toggle_quick_menu(harpoon:list())
-		end)
+		end, { desc = "Show harpoon list" })
 
 		vim.keymap.set("n", "<C-h>", function()
 			harpoon:list():select(1)
-		end)
+		end, { desc = "Go to buffer 1 in harpoon list" })
+
 		vim.keymap.set("n", "<C-t>", function()
 			harpoon:list():select(2)
-		end)
+		end, { desc = "Go to buffer 2 in harpoon list" })
+
 		vim.keymap.set("n", "<C-n>", function()
 			harpoon:list():select(3)
-		end)
+		end, { desc = "Go to buffer 3 in harpoon list" })
+
 		vim.keymap.set("n", "<C-s>", function()
 			harpoon:list():select(4)
-		end)
+		end, { desc = "Go to buffer 4 in harpoon list" })
 
 		vim.keymap.set("n", "<C-S-P>", function()
 			harpoon:list():prev()
-		end)
+		end, { desc = "Go to previous buffer in harpoon list" })
 		vim.keymap.set("n", "<C-S-N>", function()
 			harpoon:list():next()
-		end)
+		end, { desc = "Go to next buffer in harpoon list" })
 
 		harpoon:extend({
 			UI_CREATE = function(cx)
 				vim.keymap.set("n", "<Esc>", function()
 					harpoon.ui:close_menu()
-				end, { buffer = cx.bufnr })
+				end, { buffer = cx.bufnr, desc = "Close harpoon" })
 
 				vim.keymap.set("n", "<CR>", function()
 					local index = vim.fn.line(".")
 					harpoon.ui:toggle_quick_menu(harpoon:list())
 					harpoon:list():select(index)
-				end, { buffer = cx.bufnr })
-				vim.keymap.set("n", "<C-v>", function()
-					select_item("vsplit")
-				end, { buffer = cx.bufnr })
-
-				vim.keymap.set("n", "<C-x>", function()
-					select_item("split")
-				end, { buffer = cx.bufnr })
-
-				vim.keymap.set("n", "<C-t>", function()
-					select_item("tabedit")
-				end, { buffer = cx.bufnr })
+				end, { buffer = cx.bufnr, desc = "Select current buffer in harpoon list" })
 			end,
 		})
 	end,

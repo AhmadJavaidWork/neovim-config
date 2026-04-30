@@ -31,18 +31,57 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		keymap.set({ "i", "n" }, "<C-k>", function()
 			vim.lsp.buf.signature_help()
-		end, opts)
-		keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-		keymap.set("n", "gr", vim.lsp.buf.references, opts)
-		keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-		keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-		keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-		keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-		keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
+		end, { buffer = ev.buf, silent = true, desc = "Open function signature help" })
+
+		keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = ev.buf, silent = true, desc = "Goto definition" })
+
+		keymap.set(
+			"n",
+			"gr",
+			vim.lsp.buf.references,
+			{ buffer = ev.buf, silent = true, desc = "Open references in current buffer" }
+		)
+
+		keymap.set(
+			"n",
+			"<leader>rn",
+			vim.lsp.buf.rename,
+			{ buffer = ev.buf, silent = true, desc = "Rename a variable in scope" }
+		)
+
+		keymap.set(
+			"n",
+			"<leader>ca",
+			vim.lsp.buf.code_action,
+			{ buffer = ev.buf, silent = true, desc = "Open available code action" }
+		)
+
+		keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = ev.buf, silent = true, desc = "Goto declaration" })
+
+		keymap.set(
+			"n",
+			"gi",
+			vim.lsp.buf.implementation,
+			{ buffer = ev.buf, silent = true, desc = "Open implementations" }
+		)
+
+		keymap.set(
+			"n",
+			"gt",
+			vim.lsp.buf.type_definition,
+			{ buffer = ev.buf, silent = true, desc = "Goto type definition" }
+		)
+
 		keymap.set("n", "<leader>td", function()
 			vim.diagnostic.enable(not vim.diagnostic.is_enabled())
-		end)
-		keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+		end, { desc = "Toggle lsp diagnostics" })
+
+		keymap.set(
+			"n",
+			"<leader>d",
+			vim.diagnostic.open_float,
+			{ buffer = ev.buf, silent = true, desc = "Open current line diagnostic in float" }
+		)
 	end,
 })
 
