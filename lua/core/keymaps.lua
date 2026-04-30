@@ -41,3 +41,11 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 vim.keymap.set("n", "<leader>ga", function()
 	vim.cmd("silent !git add " .. vim.fn.expand("%"))
 end, { desc = "Git add current file (silent)" })
+
+vim.keymap.set("n", "<leader>gc", function()
+	vim.ui.input({ prompt = "Commit Message: " }, function(input)
+		if input then
+			vim.cmd('!git commit -m "' .. input .. '"')
+		end
+	end)
+end, { desc = "Git Commit" })
